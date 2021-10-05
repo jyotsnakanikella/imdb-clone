@@ -11,8 +11,11 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 
 class WatchListSerializer(serializers.ModelSerializer):
-    reviews = ReviewSerializer(many = True, read_only = True)
+    # muting reviews while display
+    # reviews = ReviewSerializer(many = True, read_only = True)
     len_name = serializers.SerializerMethodField()
+    #instead of id i want platform name
+    platform = serializers.CharField(source='platform.name')
     class Meta:
         model = WatchList
         # will take all fields in model

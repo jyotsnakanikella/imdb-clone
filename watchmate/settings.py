@@ -29,7 +29,7 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
+#what all diff tables we want to maintain
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'watchlist_app',
     'rest_framework',
+    'rest_framework.authtoken',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -127,8 +129,34 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #applies to all classes
-# REST_FRAMEWORK = {
-#     'DEFAULT_PERMISSION_CLASSES' : [
+#will authenticate first if not
+REST_FRAMEWORK = {
+    # 'DEFAULT_AUTHENTICATION_CLASSES' : [
+    #     'rest_framework.authentication.BasicAuthentication',
+    # ],
+    #  'DEFAULT_PERMISSION_CLASSES' : [
 #         'rest_framework.permissions.IsAuthenticated',
 #     ],
-# }
+     'DEFAULT_AUTHENTICATION_CLASSES' : [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    # The below will be counted on total urls which we dont want
+    # 'DEFAULT_THROTTLE_CLASSES': [
+    #     'rest_framework.throttling.AnonRateThrottle',
+    #     'rest_framework.throttling.UserRateThrottle'
+    # ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '5/day',
+        'user': '10/day',
+        'review-create' : '1/day',
+        'review-list' : '10/day',
+        'review-detail' : '3/day'
+    },
+
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    # 'PAGE_SIZE': 5,
+    'DEFAULT_RENDERER_CLASSES':(
+        'rest_framework.renderers.JSONRenderer',
+    ),
+
+}
